@@ -1,220 +1,155 @@
 <!DOCTYPE html>
+
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Her Registrasi Siswa SMP Muhammadiyah 12 GKB Gresik</title>
+<title>Pengumuman Siswa</title>
 
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#003366,#0055aa);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
+    background:linear-gradient(135deg,#003366,#0055aa);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
 }
 
 .container{
-width:100%;
-max-width:700px;
-background:white;
-border-radius:20px;
-padding:40px;
-box-shadow:0 10px 30px rgba(0,0,0,.2);
+    width:420px;
+    background:white;
+    padding:30px;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
 
-.logo{
-text-align:center;
-margin-bottom:20px;
-}
-
-.logo h1{
-color:#003366;
-font-size:28px;
-}
-
-.logo p{
-color:#666;
-}
-
-.search-box{
-display:flex;
-gap:10px;
-margin-top:20px;
+h2{
+    text-align:center;
+    color:#003366;
+    margin-bottom:20px;
 }
 
 input{
-flex:1;
-padding:15px;
-border:1px solid #ddd;
-border-radius:10px;
-font-size:16px;
+    width:100%;
+    padding:12px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    margin-bottom:15px;
+    font-size:16px;
 }
 
 button{
-padding:15px 30px;
-background:#003366;
-color:white;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
+    width:100%;
+    padding:12px;
+    background:#003366;
+    color:white;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
 }
 
 button:hover{
-background:#004c99;
+    background:#0055aa;
 }
 
-.card{
-margin-top:25px;
-display:none;
-background:#f8f9fa;
-padding:20px;
-border-radius:15px;
-}
-
-.card h3{
-color:#003366;
-margin-bottom:15px;
-}
-
-.item{
-margin-bottom:10px;
+#hasil{
+    display:none;
+    margin-top:20px;
+    background:#f4f6f9;
+    padding:15px;
+    border-radius:10px;
 }
 
 .label{
-font-weight:bold;
-color:#333;
+    font-weight:bold;
+    color:#003366;
 }
 
-.loading{
-display:none;
-text-align:center;
-margin-top:20px;
+.error{
+    color:red;
 }
-
 </style>
+
 </head>
 <body>
 
 <div class="container">
+    <h2>Pengumuman Siswa</h2>
 
-<div class="logo">
-<h1>HER REGISTRASI SISWA</h1>
-<p>SMP Muhammadiyah 12 GKB Gresik</p>
-</div>
+```
+<input type="text" id="nis" placeholder="Masukkan NIS">
 
-<div class="search-box">
-<input
-type="text"
-id="nis"
-placeholder="Masukkan NIS Siswa">
-<button onclick="cekData()">CEK</button>
-</div>
+<button onclick="cariData()">Cari</button>
 
-<div class="loading" id="loading">
-Memproses data...
-</div>
-
-<div class="card" id="hasil">
-
-<h3>Data Siswa</h3>
-
-<div class="item">
-<span class="label">NIS :</span>
-<span id="v_nis"></span>
-</div>
-
-<div class="item">
-<span class="label">Nama :</span>
-<span id="v_nama"></span>
-</div>
-
-<div class="item">
-<span class="label">Kelas :</span>
-<span id="v_kelas"></span>
-</div>
-
-<div class="item">
-<span class="label">Tempat Lahir :</span>
-<span id="v_tempat"></span>
-</div>
-
-<div class="item">
-<span class="label">Tanggal Lahir :</span>
-<span id="v_tanggal"></span>
-</div>
-
-<div class="item">
-<span class="label">Alamat :</span>
-<span id="v_alamat"></span>
-</div>
-
-</div>
+<div id="hasil"></div>
+```
 
 </div>
 
 <script>
 
-const API_URL =
-"https://script.google.com/macros/s/AKfycbzfur-j-bKjDOsQlbSnUaY7vvnht6u77kX2KQ0DVUVtIlIL_i1CFdAuCR3Ouq7gc1BlJw/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxL-a4zAVvb_0uat5NN9lVcVtSYssIxZWJSpbTKUJpUhDs-BBTgRWjqVCfYcUlyW_ep/exec";
 
-async function cekData(){
+function cariData(){
 
-const nis = document.getElementById("nis").value;
+    const nis = document.getElementById("nis").value.trim();
+    const hasil = document.getElementById("hasil");
 
-if(nis==""){
-alert("Masukkan NIS terlebih dahulu");
-return;
+    if(!nis){
+        alert("Silakan masukkan NIS");
+        return;
+    }
+
+    hasil.style.display = "block";
+    hasil.innerHTML = "Memproses...";
+
+    fetch(`${API_URL}?nis=${nis}`)
+    .then(res => res.json())
+    .then(data => {
+
+        if(data.found){
+
+            hasil.innerHTML = `
+                <h3>Data Siswa</h3>
+                <br>
+                <p><span class="label">NIS :</span> ${data.nis}</p>
+                <p><span class="label">Nama :</span> ${data.nama}</p>
+                <p><span class="label">Kelas :</span> ${data.kelas}</p>
+            `;
+
+        }else{
+
+            hasil.innerHTML = `
+                <p class="error">
+                    NIS tidak ditemukan.
+                </p>
+            `;
+
+        }
+
+    })
+    .catch(err => {
+
+        hasil.innerHTML = `
+            <p class="error">
+                Gagal mengambil data.
+            </p>
+        `;
+
+        console.error(err);
+
+    });
+
 }
-
-document.getElementById("loading").style.display="block";
-document.getElementById("hasil").style.display="none";
-
-try{
-
-const response = await fetch(
-`${API_URL}?nis=${nis}`
-);
-
-const data = await response.json();
-
-document.getElementById("loading").style.display="none";
-
-if(data.status){
-
-document.getElementById("hasil").style.display="block";
-
-document.getElementById("v_nis").innerHTML=data.nis;
-document.getElementById("v_nama").innerHTML=data.nama;
-document.getElementById("v_kelas").innerHTML=data.kelas;
-document.getElementById("v_tempat").innerHTML=data.tempat;
-document.getElementById("v_tanggal").innerHTML=data.tanggal;
-document.getElementById("v_alamat").innerHTML=data.alamat;
-
-}else{
-alert("NIS tidak ditemukan");
-}
-
-}catch(error){
-
-document.getElementById("loading").style.display="none";
-alert("Gagal terhubung ke server");
-
-}
-
-}
-
 </script>
 
 </body>
