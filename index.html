@@ -121,9 +121,20 @@ function cariData(){
             hasil.innerHTML = `
                 <h3>Data Siswa</h3>
                 <br>
-                <p><span class="label">NIS :</span> ${data.nis}</p>
-                <p><span class="label">Nama :</span> ${data.nama}</p>
-                <p><span class="label">Kelas :</span> ${data.kelas}</p>
+    <table style="width:100%; border-collapse:collapse;">
+        <tr>
+            <td style="padding:5px; width:80px;"><b>NIS</b></td>
+            <td style="padding:5px;">: ${data.nis}</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;"><b>Nama</b></td>
+            <td style="padding:5px;">: ${data.nama}</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;"><b>Kelas</b></td>
+            <td style="padding:5px;">: ${data.kelas}</td>
+        </tr>
+    </table>
             `;
 
         }else{
