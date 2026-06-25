@@ -149,28 +149,32 @@ button:hover{
 <div id="hasil" class="hasil">
 
 <div class="item">
-<span class="label">Nama :</span>
-<span id="nama"></span>
-</div>
-
-<div class="item">
-<span class="label">Kelas :</span>
-<span id="kelas"></span>
-</div>
-
-<div class="item">
-<span class="label">Wali Kelas :</span>
-<span id="wali"></span>
-</div>
-
-<div class="item">
-<span class="label">Nomor WA Wali Kelas :</span>
-<span id="wa"></span>
-</div>
-
-<div class="item">
-<span class="label">Link Grup Kelas :</span><span id="grup"></span>
-
+<table style="width:100%; border-collapse:collapse;">
+        <tr>
+            <td style="padding:5px; width:80px;"><b>NIS</b></td>
+            <td style="padding:5px;">: ${data.nis}</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;"><b>Nama</b></td>
+            <td style="padding:5px;">: ${data.nama}</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;"><b>Kelas</b></td>
+            <td style="padding:5px;">: ${data.kelas}</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;"><b>Wali Kelas</b></td>
+            <td style="padding:5px;">: ${data.wali}</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;"><b>WA Wali Kelas</b></td>
+            <td style="padding:5px;">: ${data.wali}</td>
+        </tr>
+        <tr>
+            <td style="padding:5px;"><b>Link Grup WA Kelas</b></td>
+            <td style="padding:5px;">: ${data.grup}</td>
+        </tr>
+    </table>
 </div>
 
 </div>
