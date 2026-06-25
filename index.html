@@ -115,6 +115,11 @@ function cariData(){
 
     let nis = document.getElementById("nis").value;
 
+    if(!nis){
+    alert("Silakan masukkan NIS");
+    return;
+    }
+
     fetch(`${WEB_APP_URL}?nis=${nis}`)
     .then(response => response.json())
     .then(data => {
