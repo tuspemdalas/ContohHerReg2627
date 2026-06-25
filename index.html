@@ -1,13 +1,14 @@
+```html
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pengumuman Siswa</title>
+<title>Pengumuman Kelas Siswa TA 2026/2027</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -16,60 +17,97 @@
 }
 
 body{
-    background-image: url(spem.png);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     min-height:100vh;
+    background:linear-gradient(135deg,#003366,#0055aa);
     display:flex;
     justify-content:center;
     align-items:center;
+    padding:20px;
 }
 
 .container{
-    width:420px;
-    background:white;
-    padding:30px;
+    width:100%;
+    max-width:700px;
+    background:#fff;
     border-radius:20px;
+    padding:30px;
     box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
 
-h2{
+h1{
     text-align:center;
     color:#003366;
-    margin-bottom:20px;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
 }
 
 input{
     width:100%;
-    padding:12px;
-    border:1px solid #ddd;
+    padding:15px;
+    border:2px solid #ddd;
     border-radius:10px;
-    margin-bottom:15px;
     font-size:16px;
+    margin-bottom:15px;
 }
 
 button{
     width:100%;
-    padding:12px;
-    background:#003366;
-    color:white;
+    padding:15px;
     border:none;
     border-radius:10px;
-    cursor:pointer;
+    background:#0055aa;
+    color:white;
     font-size:16px;
+    cursor:pointer;
 }
 
 button:hover{
-    background:#0055aa;
+    background:#003366;
 }
 
-#hasil{
+.loading{
+    display:none;
+    text-align:center;
+    margin-top:20px;
+}
+
+.spinner{
+    width:45px;
+    height:45px;
+    border:4px solid #ddd;
+    border-top:4px solid #0055aa;
+    border-radius:50%;
+    margin:auto;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{
+        transform:rotate(360deg);
+    }
+}
+
+.loading p{
+    margin-top:10px;
+    color:#003366;
+    font-weight:bold;
+}
+
+.hasil{
     display:none;
     margin-top:20px;
-    background:#f4f6f9;
-    padding:15px;
+    background:#f5f7fa;
     border-radius:10px;
+    padding:20px;
+}
+
+.item{
+    margin-bottom:15px;
 }
 
 .label{
@@ -77,105 +115,119 @@ button:hover{
     color:#003366;
 }
 
-.error{
-    color:red;
+.grup-btn{
+    display:inline-block;
+    margin-top:10px;
+    padding:12px 20px;
+    background:#25D366;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
 }
-</style>
 
+.grup-btn:hover{
+    background:#1da851;
+}
+
+</style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Pengumuman Kelas Siswa Tahun Ajaran 2026-2027</h2>
 
+<h1>Pengumuman Kelas Siswa</h1>
+<p class="subtitle">Tahun Ajaran 2026/2027</p>
 
-<input type="text" id="nis" placeholder="Masukkan NIS">
+<input type="text" id="nis" placeholder="Masukkan NIS Siswa">
 
-<button onclick="cariData()">Cari</button>
+<button onclick="cariData()">Cari Data</button>
 
-<div id="hasil"></div>
+<div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Memproses Data Siswa...</p>
+</div>
 
+<div id="hasil" class="hasil">
+
+<div class="item">
+<span class="label">Nama :</span>
+<span id="nama"></span>
+</div>
+
+<div class="item">
+<span class="label">Kelas :</span>
+<span id="kelas"></span>
+</div>
+
+<div class="item">
+<span class="label">Wali Kelas :</span>
+<span id="wali"></span>
+</div>
+
+<div class="item">
+<span class="label">Nomor WA Wali Kelas :</span>
+<span id="wa"></span>
+</div>
+
+<div class="item">
+<span class="label">Link Grup Kelas :</span><br>
+<a id="grupKelas" href="#" target="_blank" class="grup-btn">
+Gabung Grup Kelas
+</a>
+</div>
+
+</div>
 
 </div>
 
 <script>
 
-const API_URL = "https://script.google.com/macros/s/AKfycbw5KeaxBEmaLDSECA1kyvi0BAtDQwt2Sp5Y3EzHhqQy2DSOt5BNY6S4Po-wif9VeH4J/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw5KeaxBEmaLDSECA1kyvi0BAtDQwt2Sp5Y3EzHhqQy2DSOt5BNY6S4Po-wif9VeH4J/exec";
 
 function cariData(){
 
     const nis = document.getElementById("nis").value.trim();
-    const hasil = document.getElementById("hasil");
 
-    if(!nis){
-        alert("Silakan masukkan NIS");
+    if(nis === ""){
+        alert("Silakan masukkan NIS terlebih dahulu");
         return;
     }
 
-    hasil.style.display = "block";
-    hasil.innerHTML = "Memproses...";
+    document.getElementById("loading").style.display="block";
+    document.getElementById("hasil").style.display="none";
 
-    fetch(`${API_URL}?nis=${nis}`)
-    .then(res => res.json())
+    fetch(`${WEB_APP_URL}?nis=${encodeURIComponent(nis)}`)
+    .then(response => response.json())
     .then(data => {
 
-        if(data.found){
+        document.getElementById("loading").style.display="none";
 
-            hasil.innerHTML = `
-                <h3>Data Siswa</h3>
-                <br>
-    <table style="width:100%; border-collapse:collapse;">
-        <tr>
-            <td style="padding:5px; width:80px;"><b>NIS</b></td>
-            <td style="padding:5px;">: ${data.nis}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px;"><b>Nama</b></td>
-            <td style="padding:5px;">: ${data.nama}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px;"><b>Kelas</b></td>
-            <td style="padding:5px;">: ${data.kelas}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px;"><b>Wali Kelas</b></td>
-            <td style="padding:5px;">: ${data.wali}</td>
-        </tr>
-        <tr>
-            <td style="padding:5px;"><b>WA Wali Kelas</b></td>
-            <td style="padding:5px;">: ${data.wa}</td>
-        </tr>
-                <tr>
-            <td style="padding:5px;"><b>Link Grup WA Kelas</b></td>
-            <td style="padding:5px;">: ${data.grup}</td>
-    </table>
-            `;
+        if(data.status === "success"){
+
+            document.getElementById("hasil").style.display="block";
+
+            document.getElementById("nama").textContent = data.nama;
+            document.getElementById("kelas").textContent = data.kelas;
+            document.getElementById("wali").textContent = data.wali;
+            document.getElementById("wa").textContent = data.wa;
+            document.getElementById("grupKelas").href = data.grup;
 
         }else{
-
-            hasil.innerHTML = `
-                <p class="error">
-                    NIS tidak ditemukan.
-                </p>
-            `;
-
+            alert("Data siswa tidak ditemukan");
         }
 
     })
-    .catch(err => {
+    .catch(error => {
 
-        hasil.innerHTML = `
-            <p class="error">
-                Gagal mengambil data.
-            </p>
-        `;
-
-        console.error(err);
+        document.getElementById("loading").style.display="none";
+        alert("Gagal terhubung ke database");
 
     });
 
 }
+
 </script>
 
 </body>
 </html>
+```
